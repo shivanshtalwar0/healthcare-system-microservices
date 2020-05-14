@@ -1,4 +1,4 @@
-package com.cg.hcs.model;
+package com.cg.diagnosticservice.model;
 
 
 import lombok.AllArgsConstructor;
@@ -11,10 +11,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class TestAttributes {
+
 	private String testAttributeName;
 	private long id;
 
-	public TestAttributes(String attributeName) {
-		this.testAttributeName=attributeName;
-	}
 }

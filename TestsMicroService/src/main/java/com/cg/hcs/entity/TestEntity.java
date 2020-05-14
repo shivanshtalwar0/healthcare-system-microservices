@@ -1,5 +1,10 @@
 package com.cg.hcs.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,12 +19,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@ToString
 @Entity
 @Table(name="TestList")
 public class TestEntity {
-
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="test_id")
@@ -31,30 +37,5 @@ public class TestEntity {
 	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
 	@JoinColumn(name="test_id",referencedColumnName="test_id")
 	private List<TestAttributesEntity> testAttributes;
-	
-	
-	
-	
-
-	public List<TestAttributesEntity> getTestAttributes() {
-		return testAttributes;
-	}
-	public void setTestAttributes(List<TestAttributesEntity> testAttributes) {
-		this.testAttributes = testAttributes;
-	}
-	public long getTestId() {
-		return testId;
-	}
-	public void setTestId(long l) {
-		this.testId = l;
-	}
-	
-	public String getTestName() {
-		return testName;
-	}
-	public void setTestName(String testName) {
-		this.testName = testName;
-	}
-	
 	
 }

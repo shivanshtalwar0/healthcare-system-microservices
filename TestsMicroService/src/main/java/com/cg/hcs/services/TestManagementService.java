@@ -23,9 +23,4 @@ public interface TestManagementService {
 	List<TestModel> findAll();
 	
 	TestModel save(Long testId,TestModel model) throws TestManagementException;
-
-	
-
-	
-
 }

@@ -21,6 +21,7 @@ import com.cg.hcs.exception.TestManagementException;
 import com.cg.hcs.model.TestModel;
 import com.cg.hcs.services.TestManagementService;
 
+import javax.validation.Valid;
 
 
 @Controller
@@ -32,11 +33,10 @@ public class TestManagementController {
 	private TestManagementService testservice;
 	
 	@PostMapping("/add")
-	public ResponseEntity<TestModel> addTest(@RequestBody TestModel model) throws TestManagementException{
+	public ResponseEntity<TestModel> addTest(@Valid @RequestBody TestModel model) throws TestManagementException{
 		model=testservice.add(model);
 		 System.out.println(model);
 		 return new ResponseEntity<>(model,HttpStatus.CREATED);
-		
 	}
 	
 	@GetMapping("/view")
@@ -65,6 +65,7 @@ public class TestManagementController {
 	
 	@PutMapping("/update/{testId}")
 	public ResponseEntity<TestModel> updateEmployee(@PathVariable(value="testId") Long testId,@RequestBody TestModel model) throws TestManagementException {
+
 		TestModel testModel = testservice.save(testId,model);
 		return new ResponseEntity<>(testModel, HttpStatus.OK);
 	}

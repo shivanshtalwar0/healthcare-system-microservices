@@ -1,38 +1,18 @@
 package com.cg.hcs.model;
 
+import lombok.*;
+
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class TestModel {
 	
 	long testId;
+	@NonNull
 	String testName;
-	
+	@NonNull
 	List<TestAttributes> testAttributes;
-	
-	public TestModel()
-	{}
-	@Override
-	public String toString() {
-		return "TestModel [testId=" + testId + ", testName=" + testName + ", testAttributes=" + testAttributes + "]";
-	}
-	public List<TestAttributes> getTestAttributes() {
-		return testAttributes;
-	}
-	public void setTestAttributes(List<TestAttributes> testAttributes) {
-		this.testAttributes = testAttributes;
-	}
-	public long getTestId() {
-		return testId;
-	}
-	public String getTestName() {
-		return testName;
-	}
-	public void setTestName(String testName) {
-		this.testName = testName;
-	}
-	public void setTestId(long testId) {
-		this.testId = testId;
-	}
-	   
- 
      }

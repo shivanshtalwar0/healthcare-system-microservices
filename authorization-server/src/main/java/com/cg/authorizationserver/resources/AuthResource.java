@@ -28,7 +28,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-@CrossOrigin("*")
 @RestController
 @CrossOrigin(origins ="*")
 @RequestMapping("/auth")

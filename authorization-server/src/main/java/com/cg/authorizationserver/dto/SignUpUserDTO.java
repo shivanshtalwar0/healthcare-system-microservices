@@ -28,5 +28,5 @@ public class SignUpUserDTO {
 	private long contactNo;
 	@NotEmpty(message = "Please Enter Password")
     private String password;
-    List<Role> rolesList;
+
 }
