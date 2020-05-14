@@ -1,5 +1,6 @@
 package com.cg.apms.security;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -24,7 +25,10 @@ public class JwtSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 .authorizeRequests()
                 // allow all request if user has Authority admin
-                .antMatchers("/**").hasAuthority("USER")
+                .antMatchers(HttpMethod.POST,"/**").hasAuthority("USER")
+                .antMatchers(HttpMethod.PUT,"/**").hasAuthority("USER")
+                .antMatchers(HttpMethod.DELETE,"/**").hasAuthority("USER")
+                .antMatchers(HttpMethod.GET,"/**").hasAnyAuthority("ADMIN","USER","FACILITATOR")
                 // any other requests must be authenticated
                 .anyRequest().authenticated();
     }

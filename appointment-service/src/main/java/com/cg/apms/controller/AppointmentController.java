@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.apms.model.AppointmentModel;
+import com.cg.apms.model.DiagnosticCenterModel;
 import com.cg.apms.service.AppointmentService;
 import com.cg.apms.service.DiagnosticCenterProxyService;
 
@@ -29,18 +30,24 @@ public class AppointmentController {
 	@Autowired
 	DiagnosticCenterProxyService dcProxyServ;
 
-	@GetMapping
-	public ResponseEntity<List<AppointmentModel>> findAll(HttpServletRequest request){
+	@GetMapping("/lists")
+	public ResponseEntity<List<DiagnosticCenterModel>> findAll(HttpServletRequest request){
 		String bearerTokenString=request.getHeader("Authorization");
-		dcProxyServ.getAllCenters(bearerTokenString.replace("Bearer ",""));
-		return new ResponseEntity<>(service.findAll(),HttpStatus.OK);
+		List<DiagnosticCenterModel> model=dcProxyServ.getAllCenters(bearerTokenString.replace("Bearer ",""));
+    	return new ResponseEntity<>(model,HttpStatus.OK);
 	}
+
 	@PostMapping
 	public ResponseEntity<AppointmentModel> add(@RequestBody AppointmentModel model){
 		
 		model=service.add(model);
 		
 		return new ResponseEntity<>(model,HttpStatus.CREATED);
+	}
+
+	@GetMapping
+	public ResponseEntity<List<AppointmentModel>> findAll(){
+		return new ResponseEntity<>(service.findAll(),HttpStatus.OK);
 	}
 	@GetMapping("/{patientid}")
 	public ResponseEntity<AppointmentModel> findById(@PathVariable("patientid")Long patientid){
