@@ -1,6 +1,7 @@
 .idea
 .metadata
 Servers
+.git
 .vscode
 appointment-service/target
 ApponitmentManagementService
