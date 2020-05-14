@@ -1,15 +1,16 @@
-package com.cg.tms;
+package com.cg.hcs;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class TestsMicroServiceApplication {
+public class HealthCareSystemProjectApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TestsMicroServiceApplication.class, args);
+		SpringApplication.run(HealthCareSystemProjectApplication.class, args);
 	}
 
 }
