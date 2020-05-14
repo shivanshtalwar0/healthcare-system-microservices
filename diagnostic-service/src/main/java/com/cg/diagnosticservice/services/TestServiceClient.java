@@ -13,7 +13,11 @@ import java.util.List;
 @RibbonClient("test-management-micro-service")
 public interface TestServiceClient {
     @GetMapping("/testoperations/view")
-    public List<TestModel> getTest(
+    public List<TestModel> getTestList(
             @RequestHeader("Authorization") String authorizationToken);
+
+    @GetMapping("/testoperations/add")
+    public TestModel createTest(
+            @RequestHeader("Authorization") String authorizationToken,TestModel testModel);
 
 }

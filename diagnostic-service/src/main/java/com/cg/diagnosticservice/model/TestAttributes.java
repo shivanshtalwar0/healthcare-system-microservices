@@ -14,5 +14,8 @@ public class TestAttributes {
 
 	private String testAttributeName;
 	private long id;
+	public TestAttributes(String testAttributeName){
+		this.testAttributeName=testAttributeName;
+	}
 
 }
