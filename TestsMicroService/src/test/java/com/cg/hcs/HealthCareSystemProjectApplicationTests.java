@@ -1,10 +1,10 @@
-package com.cg.tms;
+package com.cg.hcs;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TestsMicroServiceApplicationTests {
+class HealthCareSystemProjectApplicationTests {
 
 	@Test
 	void contextLoads() {
