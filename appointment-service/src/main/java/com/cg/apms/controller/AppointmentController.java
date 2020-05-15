@@ -32,7 +32,7 @@ public class AppointmentController {
 	@GetMapping
 	public ResponseEntity<List<AppointmentModel>> findAll(HttpServletRequest request){
 		String bearerTokenString=request.getHeader("Authorization");
-		dcProxyServ.getAllCenters(bearerTokenString.replace("Bearer ",""));
+		dcProxyServ.getAllCenters(bearerTokenString);
 		return new ResponseEntity<>(service.findAll(),HttpStatus.OK);
 	}
 	@PostMapping

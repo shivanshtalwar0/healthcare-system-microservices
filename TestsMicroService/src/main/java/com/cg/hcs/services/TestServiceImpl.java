@@ -1,5 +1,6 @@
 package com.cg.hcs.services;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,9 +44,10 @@ public class TestServiceImpl implements TestManagementService {
 
 
     @Override
-    public TestModel add(TestModel test) throws TestManagementException {
+    public TestModel add(TestModel test) throws SQLException {
         return toModel(testrepo.save(toEntity(test)));
     }
+
 
 
     @Override
@@ -84,6 +86,12 @@ public class TestServiceImpl implements TestManagementService {
         } else
             throw new TestManagementException("Updation not possible");
         return testModel;
+    }
+
+    @Override
+    public TestModel findByName(String testName) {
+        Optional<TestEntity> testModelOptional=testrepo.findByTestName(testName);
+        return testModelOptional.map(this::toModel).orElse(null);
     }
 
 

@@ -31,7 +31,7 @@ public class TestEntity {
 	@Column(name="test_id")
 	long testId;
 	
-	@Column(name = "test_Name",nullable=false)
+	@Column(name = "test_Name",nullable=false,unique = true)
 	String testName;
 	
 	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)

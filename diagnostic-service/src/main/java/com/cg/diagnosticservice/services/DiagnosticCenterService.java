@@ -3,6 +3,7 @@ package com.cg.diagnosticservice.services;
 import com.cg.diagnosticservice.dao.DiagnosticCenterRepository;
 import com.cg.diagnosticservice.dao.DiagnosticCenterTestsRepository;
 import com.cg.diagnosticservice.dto.DiagnosticCenterDto;
+import com.cg.diagnosticservice.dto.DiagnosticCenterTestsDto;
 import com.cg.diagnosticservice.dto.RestResponse;
 import com.cg.diagnosticservice.entity.DiagnosticCenter;
 import com.cg.diagnosticservice.entity.DiagnosticCenterTests;
@@ -32,49 +33,45 @@ public class DiagnosticCenterService {
     @Autowired
     TestServiceClient testServiceClient;
 
-    public ResponseEntity<?> addTestToDiagnosticCenter(long centerId, long testId) {
+    public DiagnosticCenterTestsDto addTestToDiagnosticCenter(long centerId, long testId) {
         DiagnosticCenterTests diagnosticCenterTests = new DiagnosticCenterTests();
         diagnosticCenterTests.setCenterId(centerId);
         diagnosticCenterTests.setTestId(testId);
-        return ResponseEntity.ok(diagnosticCenterTestsRepository.save(diagnosticCenterTests));
+        return DiagnosticCenterTestsDto.fromEntity(diagnosticCenterTestsRepository.save(diagnosticCenterTests));
     }
-    public ResponseEntity<?> getTestsForDiagnosticCenter(HttpServletRequest request,long centerId) {
-        List<TestModel> testModelList = testServiceClient.getTestList(request.getHeader("Authorization"));
+
+    public List<TestModel> getTestsForDiagnosticCenter(String token, long centerId) {
+        List<TestModel> testModelList = testServiceClient.getTestList(token);
         Optional<List<DiagnosticCenterTests>> diagnosticCenterTests = diagnosticCenterTestsRepository.findByCenterId(centerId);
         if (diagnosticCenterTests.isPresent()) {
             List<Long> testIdList = diagnosticCenterTests.get().stream().map(DiagnosticCenterTests::getTestId).collect(Collectors.toList());
-            return ResponseEntity.ok(testModelList.stream().filter((testModel -> testIdList.contains(testModel.getTestId()))).collect(Collectors.toList()));
+            return testModelList.stream().filter((testModel -> testIdList.contains(testModel.getTestId()))).collect(Collectors.toList());
         } else {
-            return ResponseEntity.badRequest().body("something went wrong");
-
+            return null;
         }
     }
 
-    public ResponseEntity<?> getCenterList() {
+    public List<DiagnosticCenterDto> getCenterList() {
         List<DiagnosticCenter> diagnosticCenters = new ArrayList<>();
         diagnosticCenterRepository.findAll().forEach((diagnosticCenters::add));
-        return ResponseEntity.ok(diagnosticCenters);
+        return DiagnosticCenterDto.fromEntity(diagnosticCenters);
     }
 
-    public ResponseEntity<?> updateCenter( long id,DiagnosticCenterDto diagnosticCenterDto) throws DiagnosticCenterNotFoundException {
+    public DiagnosticCenterDto updateCenter(long id, DiagnosticCenterDto diagnosticCenterDto) throws DiagnosticCenterNotFoundException {
         Optional<DiagnosticCenter> optionalDiagnosticCenter = diagnosticCenterRepository.findById(id);
 
         if (optionalDiagnosticCenter.isPresent()) {
             DiagnosticCenter v = optionalDiagnosticCenter.get();
-            try {
-                v.setCenterName(diagnosticCenterDto.getCenterName());
-                v.setAddress(diagnosticCenterDto.getAddress());
-                v.setContactNo(diagnosticCenterDto.getContactNo());
-                diagnosticCenterRepository.save(v);
-                return ResponseEntity.ok(new RestResponse<>("updated", true, null));
-            } catch (Exception e) {
-                return ResponseEntity.ok(new RestResponse<>(null, false, e.getCause().getMessage()));
-            }
-        } else {
-            return ResponseEntity.ok(new RestResponse<>(null, false, "Not found by " + id));
-        }
+            v.setCenterName(diagnosticCenterDto.getCenterName());
+            v.setAddress(diagnosticCenterDto.getAddress());
+            v.setContactNo(diagnosticCenterDto.getContactNo());
+            return DiagnosticCenterDto.fromEntity(diagnosticCenterRepository.save(v));
 
+        } else {
+            return null;
+        }
     }
+
     public TestModel addDefaultTest(String token, String testName, String[] testAttributeArray) {
         TestModel testModel = new TestModel();
         testModel.setTestName(testName);
@@ -86,16 +83,16 @@ public class DiagnosticCenterService {
         return this.testServiceClient.createTest(token, testModel);
     }
 
-    public ResponseEntity<?> deleteCenter(long centerId) {
+    public boolean deleteCenter(long centerId) {
         try {
             diagnosticCenterRepository.deleteById(centerId);
-            return ResponseEntity.ok(new RestResponse<>("deleted", true, null));
+            return true;
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new RestResponse<>(null, false, e.getCause().getMessage()));
+            return false;
         }
     }
 
-    public ResponseEntity<?> addCenter(HttpServletRequest request, DiagnosticCenterDto diagnosticCenterDto) {
+    public DiagnosticCenter addCenter(String token, DiagnosticCenterDto diagnosticCenterDto) {
         try {
             DiagnosticCenter d = new DiagnosticCenter();
             d.setCenterName(diagnosticCenterDto.getCenterName());
@@ -103,12 +100,18 @@ public class DiagnosticCenterService {
             d.setContactNo(diagnosticCenterDto.getContactNo());
             if (diagnosticCenterDto.getId() != null)
                 d.setId(diagnosticCenterDto.getId());
-            TestModel t1 = addDefaultTest(request.getHeader("Authorization"), "Diabetes", new String[]{"blood glucose", "oxygen level"});
+            TestModel t1;
+            try{
+                t1 = addDefaultTest(token, "Diabetes", new String[]{"blood glucose", "oxygen level"});
+            }
+            catch (Exception e){
+                t1=testServiceClient.getTestByName("Diabetes",token);
+            }
             DiagnosticCenter d1 = diagnosticCenterRepository.save(d);
             diagnosticCenterTestsRepository.save(new DiagnosticCenterTests(d1.getId(), t1.getTestId()));
-            return ResponseEntity.ok(d1);
+            return d1;
         } catch (Exception e) {
-            return ResponseEntity.ok(new RestResponse<>(null, false, e.getCause().getMessage()));
+            return null;
         }
 
 
