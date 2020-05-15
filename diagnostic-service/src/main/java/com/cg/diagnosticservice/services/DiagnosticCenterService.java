@@ -53,7 +53,7 @@ public class DiagnosticCenterService {
     public ResponseEntity<?> getCenterList() {
         List<DiagnosticCenter> diagnosticCenters = new ArrayList<>();
         diagnosticCenterRepository.findAll().forEach((diagnosticCenters::add));
-        return ResponseEntity.ok(new RestResponse<>(diagnosticCenters, true, null));
+        return ResponseEntity.ok(diagnosticCenters);
     }
 
     public ResponseEntity<?> updateCenter( long id,DiagnosticCenterDto diagnosticCenterDto) throws DiagnosticCenterNotFoundException {
