@@ -15,7 +15,7 @@ import java.util.List;
 public class DiagnosticCenter  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    long id;
     @Column(unique = true)
     String centerName;
     String address;
