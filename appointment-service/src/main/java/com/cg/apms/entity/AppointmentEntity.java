@@ -21,4 +21,19 @@ public class AppointmentEntity {
 	private String centername;
 	@Column(name="test_name")
 	private String testName;
+	@Column(name="Center_ID")
+	private long centerId;
+	@Column(name="Test_Id")
+	private long testId;public Long getCenterId() {
+		return centerId;
+	}
+	public void setCenterId(Long centerId) {
+		this.centerId = centerId;
+	}
+	public Long getTestId() {
+		return testId;
+	}
+	public void setTestId(Long testId) {
+		this.testId = testId;
+	}
 }

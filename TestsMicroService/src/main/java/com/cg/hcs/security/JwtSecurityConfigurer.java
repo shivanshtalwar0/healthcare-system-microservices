@@ -32,9 +32,9 @@ public class JwtSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 .authorizeRequests()
                 // allow all request if user has Authority admin
-                .antMatchers(HttpMethod.POST,"/**").hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.PUT,"/**").hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.DELETE,"/**").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST,"/**").hasAuthority("USER")
+                .antMatchers(HttpMethod.PUT,"/**").hasAuthority("USER")
+                .antMatchers(HttpMethod.DELETE,"/**").hasAuthority("USER")
                 .antMatchers(HttpMethod.GET,"/**").hasAnyAuthority("ADMIN","USER")
                 // any other requests must be authenticated
                 .anyRequest().authenticated();

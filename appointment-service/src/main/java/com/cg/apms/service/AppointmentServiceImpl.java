@@ -26,7 +26,9 @@ public class AppointmentServiceImpl implements AppointmentService{
                      	model.setPatientid(entity.getPatientid());
                      	model.setCentername(entity.getCentername());
                      	model.setTestName(entity.getTestName());
-                     	model.setDate(entity.getDate());
+						 model.setDate(entity.getDate());
+						 model.setCenterId(entity.getCenterId());
+						 model.setTestId(entity.getTestId());
 
                     }
                     return model;
@@ -39,6 +41,8 @@ public class AppointmentServiceImpl implements AppointmentService{
 			entity.setCentername(model.getCentername());
 			entity.setTestName(model.getTestName());
 			entity.setDate(model.getDate());
+			entity.setCenterId(model.getCenterId());
+			entity.setTestId(model.getTestId());
 			
 		}
 	

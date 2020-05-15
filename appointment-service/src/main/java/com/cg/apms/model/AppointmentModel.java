@@ -18,6 +18,18 @@ public class AppointmentModel {
 	private String  date;
 	private String centername;
 	private String testName;
-//	 private List<DiagnosticCenterModel> CenterList;
-//	private List<TesetDataModel> testList;
+	private long centerId;
+	private long testId;
+	public Long getCenterId() {
+		return centerId;
+	}
+	public void setCenterId(Long centerId) {
+		this.centerId = centerId;
+	}
+	public Long getTestId() {
+		return testId;
+	}
+	public void setTestId(Long testId) {
+		this.testId = testId;
+	}
 }

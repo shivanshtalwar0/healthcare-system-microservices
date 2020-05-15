@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.apms.model.AppointmentModel;
+import com.cg.apms.model.DiagnosticCenterDto;
 import com.cg.apms.service.AppointmentService;
 import com.cg.apms.service.DiagnosticCenterProxyService;
 
@@ -29,10 +30,15 @@ public class AppointmentController {
 	@Autowired
 	DiagnosticCenterProxyService dcProxyServ;
 
+	@GetMapping("/lists")
+	public ResponseEntity<List<DiagnosticCenterDto>> findAll(HttpServletRequest request){
+		// String bearerTokenString=;
+		List<DiagnosticCenterDto> model=dcProxyServ.getAllCenters(request.getHeader("Authorization"));
+    	return new ResponseEntity<>(model,HttpStatus.OK);
+	}
+	 
 	@GetMapping
-	public ResponseEntity<List<AppointmentModel>> findAll(HttpServletRequest request){
-		String bearerTokenString=request.getHeader("Authorization");
-		dcProxyServ.getAllCenters(bearerTokenString.replace("Bearer ",""));
+	public ResponseEntity<List<AppointmentModel>> findAll(){
 		return new ResponseEntity<>(service.findAll(),HttpStatus.OK);
 	}
 	@PostMapping
