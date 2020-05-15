@@ -38,15 +38,15 @@ public class AuthUser {
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL,targetEntity = Roles.class)
     List<Roles> rolesList;
 
-    @Override
-    public String toString() {
-        return "AuthUser{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", contactNo='" + contactNo + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
+    // @Override
+    // public String toString() {
+    //     return "AuthUser{" +
+    //             "id=" + id +
+    //             ", username='" + username + '\'' +
+    //             ", firstName='" + firstName + '\'' +
+    //             ", lastName='" + lastName + '\'' +
+    //             ", contactNo='" + contactNo + '\'' +
+    //             ", password='" + password + '\'' +
+    //             '}';
+    // }
 }

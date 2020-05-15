@@ -60,11 +60,11 @@ public class AuthResource {
             // 3. Authentication manager authenticate the user, and use UserDetialsServiceImpl::loadUserByUsername() method to load the user.
             Authentication authentication = this.authenticationManager.authenticate(authToken);
 
-//        using this to fetch all authorities
+//        /////using this to fetch all authorities
             Collection<GrantedAuthority> authenticatedUserAuthorityList =
                     ((User) authentication.getPrincipal()).getAuthorities();
             Calendar c = Calendar.getInstance();
-//        10 minute expiration period
+//        ///10 minute expiration period
             c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 10);
             String token = Jwts.builder()
                     .setExpiration(c.getTime())
