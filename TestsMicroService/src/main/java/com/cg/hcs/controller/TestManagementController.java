@@ -1,5 +1,6 @@
 package com.cg.hcs.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,10 +34,15 @@ public class TestManagementController {
 	private TestManagementService testservice;
 	
 	@PostMapping("/add")
-	public ResponseEntity<TestModel> addTest(@Valid @RequestBody TestModel model) throws TestManagementException{
-		model=testservice.add(model);
-		 System.out.println(model);
-		 return new ResponseEntity<>(model,HttpStatus.CREATED);
+	public ResponseEntity<?> addTest(@Valid @RequestBody TestModel model) throws TestManagementException{
+		try{
+			model=testservice.add(model);
+			return new ResponseEntity<>(model,HttpStatus.CREATED);
+		}
+		catch (Exception e){
+			return ResponseEntity.badRequest().body("Test already exist!");
+		}
+
 	}
 	
 	@GetMapping("/view")
@@ -69,5 +75,16 @@ public class TestManagementController {
 		TestModel testModel = testservice.save(testId,model);
 		return new ResponseEntity<>(testModel, HttpStatus.OK);
 	}
+	@GetMapping("/{testName}")
+	public ResponseEntity<?> findByTestName(@PathVariable(value="testName") String testName) throws TestManagementException {
+		TestModel testModel = testservice.findByName(testName);
+		if(testModel!=null){
+			return new ResponseEntity<>(testModel, HttpStatus.OK);
+		}
+		else {
+			return ResponseEntity.badRequest().body("not found");
+		}
+	}
+
 
 }
