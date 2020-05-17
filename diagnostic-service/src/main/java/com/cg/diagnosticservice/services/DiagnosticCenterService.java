@@ -4,20 +4,12 @@ import com.cg.diagnosticservice.dao.DiagnosticCenterRepository;
 import com.cg.diagnosticservice.dao.DiagnosticCenterTestsRepository;
 import com.cg.diagnosticservice.dto.DiagnosticCenterDto;
 import com.cg.diagnosticservice.dto.DiagnosticCenterTestsDto;
-import com.cg.diagnosticservice.dto.RestResponse;
 import com.cg.diagnosticservice.entity.DiagnosticCenter;
 import com.cg.diagnosticservice.entity.DiagnosticCenterTests;
-import com.cg.diagnosticservice.exceptions.DiagnosticCenterNotFoundException;
 import com.cg.diagnosticservice.model.TestAttributes;
 import com.cg.diagnosticservice.model.TestModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +39,7 @@ public class DiagnosticCenterService {
             List<Long> testIdList = diagnosticCenterTests.get().stream().map(DiagnosticCenterTests::getTestId).collect(Collectors.toList());
             return testModelList.stream().filter((testModel -> testIdList.contains(testModel.getTestId()))).collect(Collectors.toList());
         } else {
-            return null;
+            return testModelList;
         }
     }
 
@@ -57,7 +49,7 @@ public class DiagnosticCenterService {
         return DiagnosticCenterDto.fromEntity(diagnosticCenters);
     }
 
-    public DiagnosticCenterDto updateCenter(long id, DiagnosticCenterDto diagnosticCenterDto) throws DiagnosticCenterNotFoundException {
+    public DiagnosticCenterDto updateCenter(long id, DiagnosticCenterDto diagnosticCenterDto) {
         Optional<DiagnosticCenter> optionalDiagnosticCenter = diagnosticCenterRepository.findById(id);
 
         if (optionalDiagnosticCenter.isPresent()) {

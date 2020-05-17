@@ -1,7 +1,5 @@
 package com.cg.apms.controller;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.cg.apms.model.AppointmentModel;
 import com.cg.apms.model.DiagnosticCenterDto;
 import com.cg.apms.service.AppointmentService;
@@ -32,7 +29,6 @@ public class AppointmentController {
 
 	@GetMapping("/lists")
 	public ResponseEntity<List<DiagnosticCenterDto>> findAll(HttpServletRequest request){
-		// String bearerTokenString=;
 		List<DiagnosticCenterDto> model=dcProxyServ.getAllCenters(request.getHeader("Authorization"));
     	return new ResponseEntity<>(model,HttpStatus.OK);
 	}

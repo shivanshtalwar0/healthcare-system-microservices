@@ -24,27 +24,27 @@ public class DiagnosticCenterController {
     DiagnosticCenterService diagnosticCenterService;
 
     @PostMapping("/{centerId}/test/{testId}")
-    ResponseEntity<?> addTestToDiagnosticCenter(@PathVariable(name = "centerId") long centerId, @PathVariable(name = "testId") long testId) {
+    public ResponseEntity<?> addTestToDiagnosticCenter(@PathVariable(name = "centerId") long centerId, @PathVariable(name = "testId") long testId) {
         DiagnosticCenterTestsDto diagnosticCenterTestsDto =
                 this.diagnosticCenterService.addTestToDiagnosticCenter(centerId, testId);
         if (diagnosticCenterTestsDto != null) {
             return ResponseEntity.ok(diagnosticCenterTestsDto);
         }
-        return ResponseEntity.badRequest().body("something went wrong");
+        return ResponseEntity.badRequest().body("failed to add Test to center");
     }
 
     @GetMapping("/{centerId}/test")
-    ResponseEntity<?> getTestsForDiagnosticCenter(HttpServletRequest request, @PathVariable(name = "centerId") long centerId) {
+    public ResponseEntity<?> getTestsForDiagnosticCenter(HttpServletRequest request, @PathVariable(name = "centerId") long centerId) {
         String token = request.getHeader("Authorization");
         List<TestModel> testModelList = this.diagnosticCenterService.getTestsForDiagnosticCenter(token, centerId);
         if (testModelList != null) {
             return ResponseEntity.ok(testModelList);
         }
-        return ResponseEntity.badRequest().body("something went wrong");
+        return ResponseEntity.badRequest().body("failed to fetch tests for given test");
     }
 
     @GetMapping
-    ResponseEntity<?> getCenters() {
+    public ResponseEntity<?> getCenters() {
         List<DiagnosticCenterDto> diagnosticCenterDtoList = this.diagnosticCenterService.getCenterList();
         if (diagnosticCenterDtoList != null) {
             return ResponseEntity.ok(diagnosticCenterDtoList);
@@ -53,7 +53,7 @@ public class DiagnosticCenterController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<?> updateCenter(@PathVariable(value = "id") long id, @RequestBody DiagnosticCenterDto diagnosticCenterDto) throws DiagnosticCenterNotFoundException {
+    public ResponseEntity<?> updateCenter(@PathVariable(value = "id") long id, @RequestBody DiagnosticCenterDto diagnosticCenterDto) throws DiagnosticCenterNotFoundException {
         DiagnosticCenterDto diagnosticCenterDtoResult = this.diagnosticCenterService.updateCenter(id, diagnosticCenterDto);
         if (diagnosticCenterDto != null) {
             return ResponseEntity.ok(diagnosticCenterDtoResult);
@@ -63,7 +63,7 @@ public class DiagnosticCenterController {
     }
 
     @DeleteMapping("/{centerId}")
-    ResponseEntity<?> deleteCenter(@PathVariable(name = "centerId") long centerId) {
+    public ResponseEntity<?> deleteCenter(@PathVariable(name = "centerId") long centerId) {
         if (this.diagnosticCenterService.deleteCenter(centerId)) {
             return ResponseEntity.ok(new RestResponse<>("delete success",true,null));
         }
@@ -73,9 +73,8 @@ public class DiagnosticCenterController {
     }
 
     @PostMapping
-    ResponseEntity<?> addCenter(HttpServletRequest request, @Valid @RequestBody DiagnosticCenterDto diagnosticCenterDto) {
-        String token = request.getHeader("Authorization");
-        DiagnosticCenter result = this.diagnosticCenterService.addCenter(token, diagnosticCenterDto);
+    public ResponseEntity<?> addCenter(HttpServletRequest request, @Valid @RequestBody DiagnosticCenterDto diagnosticCenterDto) {
+        DiagnosticCenter result = this.diagnosticCenterService.addCenter(request.getHeader("Authorization"), diagnosticCenterDto);
         if (result != null) {
             return ResponseEntity.ok(result);
         } else {
